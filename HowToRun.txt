@@ -1,0 +1,7 @@
+in terminal write:
+
+cd HeatTransport
+dotnet run
+
+This will open two windows one is empty and the other contains the graph.
+The program also writes down the exact values in the file called "wyniki.txt"

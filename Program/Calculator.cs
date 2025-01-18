@@ -12,29 +12,22 @@ namespace HeatTransport
         private double h;
         private int elements;
 
-        public void Solve(int elements)
+        public (List<double> x , List<double> y) Calculate(int elements)
         {
             this.elements = elements;
             this.h = 2.0 / elements;
 
-            // Macierz równań
-            var equationMatrix = BuildEquationMatrix();
-
-            // Wektor wyników
-            var resultVector = BuildResultVector();
-
-            // Rozwiązywanie układu równań
+            var equationMatrix = EquationMatrix();
+            var resultVector = ResultVector();
             var coefficients = equationMatrix.Solve(resultVector);
-
-            // Dodanie wartości brzegowej
             var y = new List<double>(coefficients.ToArray()) { 0.0 };
             var x = BuildXList();
 
-            // Wyświetlanie wyników
             PrintResults(equationMatrix, resultVector, x, y);
+            return (x,y);
         }
 
-        private Matrix<double> BuildEquationMatrix()
+        private Matrix<double> EquationMatrix()
         {
             var equationMatrix = Matrix<double>.Build.Dense(elements, elements);
 
@@ -74,27 +67,27 @@ namespace HeatTransport
             return Integral(i, j, a, b);
         }
 
-        // Liczenie całki metodą Gaussa Legendre
+        // Calculate integral using Gauss-Legendre method
         private double Integral(int i, int j, double a, double b)
         {
             var result = GaussLegendreRule.Integrate(
-                x => k(x) * ePrim(i, x) * ePrim(j, x),
+                x => k(x) * FuncPrime(i, x) * FuncPrime(j, x),
                 a,
                 b,
                 integrationPointCount
             );
-            return result - (e(i, 0) * e(j, 0));
+            return result - (Func(i, 0) * Func(j, 0));
         }
 
-        private Vector<double> BuildResultVector()
+        private Vector<double> ResultVector()
         {
             var resultVector = Vector<double>.Build.Dense(elements);
             for (int i = 0; i < elements - 1; i++)
             {
-                resultVector[i] = L(i);
+                resultVector[i] = Limit(i);
             }
 
-            // Brzegowy warunek Dirichleta
+            // Boundary condition for Dirichlet
             resultVector[elements - 1] = 3.0;
 
             return resultVector;
@@ -110,33 +103,33 @@ namespace HeatTransport
             return x;
         }
 
-        private double L(int i)
+        private double Limit(int index)
         {
-            return -20.0 * e(i, 0);
+            return -20.0 * Func(index, 0);
         }
 
         private double k(double x)
         {
             if (x >= 0 && x <= 1) return 1.0;
             if (x > 1 && x <= 2) return 2.0;
-            throw new ArgumentOutOfRangeException(nameof(x), "Wartość poza zakresem.");
+            throw new ArgumentOutOfRangeException(nameof(x), "Value is out of range.");
         }
 
-        private double e(int i, double x)
+        private double Func(int index, double x)
         {
-            if (x < h * (i - 1) || x > h * (i + 1))
+            if (x < h * (index - 1) || x > h * (index + 1))
                 return 0;
 
-            if (x < h * i) return x / h - i + 1;
-            return -x / h + i + 1;
+            if (x < h * index) return x / h - index + 1;
+            return -x / h + index + 1;
         }
 
-        private double ePrim(int i, double x)
+        private double FuncPrime(int index, double x)
         {
-            if (x < h * (i - 1) || x > h * (i + 1))
+            if (x < h * (index - 1) || x > h * (index + 1))
                 return 0;
 
-            if (x < h * i)
+            if (x < h * index)
                 return 1 / h;
 
             return -1 / h;

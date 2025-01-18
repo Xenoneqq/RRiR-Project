@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HeatTransport")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3a32b51a26694fa4d425b705df16011adc98946b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2899846fa65b95806ac21818b41df7a775dfb39e")]
 [assembly: System.Reflection.AssemblyProductAttribute("HeatTransport")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HeatTransport")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

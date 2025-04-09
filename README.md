@@ -8,7 +8,7 @@ The project was developed using .NET and written in C#.
 
 ## 📝 Raport
 
-The project resulted in creating a raport. The raport is written in polish and it can be found [here](./RRIR_dokumentacja.pdf)
+The project resulted in creating a raport. The raport is written in polish and it can be found [here](./RRiR_dokumentacja.pdf)
 
 ## 🔧 How to Run
 
